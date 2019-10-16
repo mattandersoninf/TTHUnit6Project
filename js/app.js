@@ -60,5 +60,16 @@ function addPhraseToDisplay(arr){
 
 }
 
+function checkLetter(buttonClick){
+    let letter_children_arr = phrase.getElementsByClassName("letter");
+    for (let i = 0; i < letter_children_arr.length ; i++){
+        if (buttonClick.value == letter_children_arr[i]){
+
+        }
+    }
+
+    return null;
+}
+
 const phaseArray = getRandomPhraseAsArray(phrases);
 addPhraseToDisplay(phaseArray);
