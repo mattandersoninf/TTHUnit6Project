@@ -1,37 +1,17 @@
-// app.js
+/* app.js */
 
 // qwerty variable
-const qwerty = document.querySelector('#qwerty');
+const qwerty = $('#qwerty');
 // phrase variable
-const phrase = document.querySelector('#phrase');
+const phrase = $('#phrase');
 // missed counter
 let missed = 0;
 // starter overlay variable
-const start_overlay = document.querySelector('#overlay');
+const start_overlay = $('#overlay');
 // Start Game button variable
-const btn__reset = document.querySelector('.btn__reset');
-// Add the event listener to the Start Game button so that when it is clicked
-// the start overlay will be hidden
-btn__reset.addEventListener("click", () => {
-    start_overlay.style.display = 'none';
-});
-
-// map constant
-const map = Array.prototype.map;
-
-// All buttons on the web page keyboard
-const qwertyButtons = document.getElementsByTagName('button');
-
-for (let i = 0; i < qwertyButtons.length; i++){
-    qwertyButtons[i].addEventListener('click', () => {
-        qwertyButtons[i].classList.add("chosen");
-        qwertyButtons[i].setAttribute("disabled","true");
-        let letterFound = checkLetter(qwertyButtons[i]);
-    });
-}
-
-
-
+const btn__reset = $('.btn__reset');
+//
+const scoreboard_ol = $("ol");
 // Phrase array
 const phrases = [
     'i am a developer',
@@ -41,12 +21,50 @@ const phrases = [
     'honeymoon avenue'
 ];
 
-// Given an array, this function will return a random value from that array
-// The random function returns a random float number from 0 to 1 (not including 1)
-// and the floor function rounds the number down to an integer.
-// By writing the function this way, you are guaranteed to return a random integer value
-// that will fall in the range of the length of the input array
-// Then, use the map function to create an array of every letter from that phrase
+const phaseArray = getRandomPhraseAsArray(phrases);
+addPhraseToDisplay(phaseArray);
+
+/*
+Clicking the btn_reset will trigger the game to start.
+The start overlay will be hidden
+ */
+btn__reset.on("click", () => {
+    start_overlay.hide();
+    missed = 0;
+});
+
+
+/*
+ Add event listener to the container for the keyboard
+ */
+qwerty.on('click', (event) => {
+    if (event.target.tagName == "BUTTON") {
+        event.target.className = "chosen";
+        event.target.setAttribute("disabled", "true");
+
+        let letterFound = checkLetter(event.target);
+
+        if (letterFound == null) {
+            scoreboard_ol.children()[missed].setAttribute("display", "none");
+            missed++;
+        }
+
+        console.log(missed);
+
+        checkWin();
+
+    }
+});
+
+
+
+/*
+ Given an array, this function will return a random value from that array.
+ The random function returns a random float number from 0 to 1 (not including 1)
+ and the floor function rounds the number down to an integer.
+ By writing the function this way, you are guaranteed to return a random integer value
+ that will fall in the range of the length of the input array.
+ */
 function getRandomPhraseAsArray(arr){
     let random = Math.floor(Math.random()*arr.length)
     
@@ -55,37 +73,39 @@ function getRandomPhraseAsArray(arr){
     return random_arr;
 }
 
-// Map a random phrase from the "phrases array" to the display
+/*
+ Map a random phrase from the "phrases array" to the display.
+ If the character you're currently looking at is ' ', add a new
+ <li> child to the phrase element with className = "space".
+ Otherwise, add a new <li> child to the phrase element with
+ className="letter". Both also add the current arr index as a text value.
+ */
 function addPhraseToDisplay(arr){
 
     for(let i=0; i<arr.length; i++){
-        let temp_list_item = document.createElement("li");
-        let temp_text_node = document.createTextNode(arr[i]);
-        temp_list_item.appendChild(temp_text_node);
-        if (arr[i] === ' '){
-            temp_list_item.className = "space";
-        } else {
-            temp_list_item.className = "letter";
-        }
-        phrase.appendChild(temp_list_item);
-    }
 
+        if (arr[i] === ' '){
+            phrase.first().append($('<li></li>')
+                .addClass("space")
+                .text(arr[i]));
+        } else {
+            phrase.first().append($('<li></li>')
+                .addClass("letter")
+                .text(arr[i]));
+        }
+    }
 }
 
+/*
 
-const phaseArray = getRandomPhraseAsArray(phrases);
-addPhraseToDisplay(phaseArray);
-
-
+ */
 function checkLetter(qwertyButton){
-    // ul that holds all of the letters in the hidden phrase
-    let phrase_ul = document.getElementById("phrase");
     // init empty string to store the input letter
     // it will get the value of the phrase letter if and only if the clicked letter is in the phrase_ul
     let letter_tracker = '';
-    for (let i = 0; i < phrase_ul.children.length ; i++){
-        if (qwertyButton.textContent == phrase_ul.children[i].textContent) {
-            phrase_ul.children[i].classList.add("show");
+    for (let i = 0; i < phrase.first().find('.letter').length ; i++){
+        if (qwertyButton.textContent == phrase.find('.letter')[i].textContent) {
+            phrase.find('.letter')[i].className = "show";
             if (letter_tracker == ''){
                 letter_tracker = qwertyButton.textContent;
             }
@@ -93,7 +113,7 @@ function checkLetter(qwertyButton){
     }
 
     if (letter_tracker !== ''){
-        return qwertyButton.textContent
+        return qwertyButton.textContent;
     }
     else {
         return null;
@@ -101,3 +121,18 @@ function checkLetter(qwertyButton){
 }
 
 
+function checkWin(){
+    if(document.getElementsByClassName('show').length == document.getElementsByClassName('letter')){
+        start_overlay.attr("display", "flex");
+        start_overlay.className = ".win";
+        $('.title').textContent = "CONGRATULATIONS, YOU'VE!";
+        btn__reset.textContent = 'WANNA PLAY AGAIN?';
+    }
+
+    if(missed > 4){
+        start_overlay.attr("display", "flex");
+        start_overlay.className = ".lose";
+        $('.title').textContent = "SORRY, YOU'VE LOST.";
+        btn__reset.textContent = 'WANNA PLAY AGAIN?';
+    }
+}
