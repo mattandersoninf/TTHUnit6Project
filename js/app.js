@@ -21,16 +21,33 @@ const phrases = [
     'honeymoon avenue'
 ];
 
-const phaseArray = getRandomPhraseAsArray(phrases);
-addPhraseToDisplay(phaseArray);
+let phraseArray = '';
 
 /*
 Clicking the btn_reset will trigger the game to start.
-The start overlay will be hidden
+The start overlay will be hidden, all of the
  */
 btn__reset.on("click", () => {
+
     start_overlay.hide();
+
+    for (let i = 0; i < $('button').length; i++){
+        $('button').eq(i).removeAttr("disabled");
+        $('button').eq(i).removeClass("chosen");
+    }
+
+    for (let i = 0; i < $('.tries').length; i++){
+        $('.tries').show();
+    }
+
+    phrase.empty();
+
+    phraseArray = getRandomPhraseAsArray(phrases);
+
+    addPhraseToDisplay(phraseArray);
+
     missed = 0;
+
 });
 
 
@@ -45,7 +62,6 @@ qwerty.on('click', (event) => {
         let letterFound = checkLetter(event.target);
 
         if (letterFound == null) {
-            console.log(scoreboard_ol.children()[missed]);
 
             scoreboard_ol.children().eq(missed).hide();
 
