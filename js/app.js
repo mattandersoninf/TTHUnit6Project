@@ -142,18 +142,18 @@ function checkLetter(qwertyButton){
 
 function checkWin(){
     if($('.show').length == $('.letter').length){
-        start_overlay.show();
         start_overlay.removeClass();
         start_overlay.addClass("win");
         $('.title').empty().text("CONGRATULATIONS, YOU'VE WON!");
         btn__reset.empty().text("WANNA PLAY AGAIN?");
+        start_overlay.show();
     }
 
     if(missed > 4){
-        start_overlay.show();
         start_overlay.removeClass();
         start_overlay.addClass("lose");
         $('.title').empty().text("SORRY, YOU'VE LOST.");
         btn__reset.empty().text('WANNA PLAY AGAIN?');
+        start_overlay.show();
     }
 }

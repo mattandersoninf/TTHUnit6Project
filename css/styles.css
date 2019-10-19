@@ -90,11 +90,13 @@ button {
 }
 
 @keyframes circle-to-rounded-square{
-    0% { border-radius: 5px 5px 5px 5px}
-    0% { border-radius: 25% 25% 25% 25%}
-    0% { border-radius: 50% 50% 50% 50%}
-    0% { border-radius: 25% 25% 25% 25%}
-    0% { border-radius: 5px 5px 5px 5px}
+    0% { border-radius: 5px 5px 5px 5px;}
+    25% { border-radius: 25% 25% 25% 25%;}
+    50% { border-radius: 50% 50% 50% 50%;}
+    75% { border-radius: 25% 25% 25% 25%;}
+    100% { border-radius: 5px 5px 5px 5px;}
+    from{background: var(--color-neutral-light);}
+    to{background-color: #76CE82;}
 }
 
 .space {
@@ -104,6 +106,8 @@ button {
 .show {
   color: #000;
   background-color: #76CE82;
+    animation-name: circle-to-rounded-square;
+    animation-duration: 2s;
 }
 
 /* Keyboard */
@@ -157,6 +161,8 @@ button {
 
 .win {
   background-color: var(--color-win);
+    animation-name: fade-in;
+    animation-duration: 4000ms;
 }
 
 .win a {
@@ -165,6 +171,8 @@ button {
 
 .lose {
   background-color: var(--color-lose);
+    animation-name: fade-in;
+    animation-duration: 4000ms;
 }
 
 .lose a {
