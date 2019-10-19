@@ -123,8 +123,8 @@ function checkLetter(qwertyButton){
     // it will get the value of the phrase letter if and only if the clicked letter is in the phrase_ul
     let letter_tracker = '';
     for (let i = 0; i < phrase.first().find('.letter').length ; i++){
-        if (qwertyButton.textContent == phrase.find('.letter')[i].textContent) {
-            phrase.find('.letter')[i].className = "show";
+        if (qwertyButton.textContent == $('.letter').eq(i).text()) {
+            $('.letter').eq(i).addClass( "show");;
             if (letter_tracker == ''){
                 letter_tracker = qwertyButton.textContent;
             }
@@ -141,18 +141,19 @@ function checkLetter(qwertyButton){
 
 
 function checkWin(){
-    console.log("checkWin triggered.");
-    if(document.getElementsByClassName('show').length == document.getElementsByClassName('letter')){
-        start_overlay.className = ".win";
-        $('.title').textContent = "CONGRATULATIONS, YOU'VE!";
-        btn__reset.textContent = 'WANNA PLAY AGAIN?';
+    if($('.show').length == $('.letter').length){
         start_overlay.show();
+        start_overlay.removeClass();
+        start_overlay.addClass("win");
+        $('.title').empty().text("CONGRATULATIONS, YOU'VE WON!");
+        btn__reset.empty().text("WANNA PLAY AGAIN?");
     }
 
     if(missed > 4){
-        start_overlay.className = ".lose";
-        $('.title').textContent = "SORRY, YOU'VE LOST.";
-        btn__reset.textContent = 'WANNA PLAY AGAIN?';
         start_overlay.show();
+        start_overlay.removeClass();
+        start_overlay.addClass("lose");
+        $('.title').empty().text("SORRY, YOU'VE LOST.");
+        btn__reset.empty().text('WANNA PLAY AGAIN?');
     }
 }
