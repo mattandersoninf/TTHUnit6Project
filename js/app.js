@@ -45,11 +45,12 @@ qwerty.on('click', (event) => {
         let letterFound = checkLetter(event.target);
 
         if (letterFound == null) {
-            scoreboard_ol.children()[missed].setAttribute("display", "none");
+            console.log(scoreboard_ol.children()[missed]);
+
+            scoreboard_ol.children().eq(missed).hide();
+
             missed++;
         }
-
-        console.log(missed);
 
         checkWin();
 
@@ -93,7 +94,9 @@ function addPhraseToDisplay(arr){
                 .addClass("letter")
                 .text(arr[i]));
         }
+
     }
+
 }
 
 /*
@@ -112,7 +115,7 @@ function checkLetter(qwertyButton){
         }
     }
 
-    if (letter_tracker !== ''){
+    if (letter_tracker != ''){
         return qwertyButton.textContent;
     }
     else {
@@ -122,17 +125,18 @@ function checkLetter(qwertyButton){
 
 
 function checkWin(){
+    console.log("checkWin triggered.");
     if(document.getElementsByClassName('show').length == document.getElementsByClassName('letter')){
-        start_overlay.attr("display", "flex");
         start_overlay.className = ".win";
         $('.title').textContent = "CONGRATULATIONS, YOU'VE!";
         btn__reset.textContent = 'WANNA PLAY AGAIN?';
+        start_overlay.show();
     }
 
     if(missed > 4){
-        start_overlay.attr("display", "flex");
         start_overlay.className = ".lose";
         $('.title').textContent = "SORRY, YOU'VE LOST.";
         btn__reset.textContent = 'WANNA PLAY AGAIN?';
+        start_overlay.show();
     }
 }
