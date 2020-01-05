@@ -10,7 +10,7 @@ let missed = 0;
 const start_overlay = $('#overlay');
 // Start Game button variable
 const btn__reset = $('.btn__reset');
-//
+// Scoreboard ordered list container
 const scoreboard_ol = $("ol");
 // Phrase array
 const phrases = [
@@ -21,12 +21,13 @@ const phrases = [
     'honeymoon avenue'
 ];
 
+// Empty string to hold the random phrase
 let phraseArray = '';
 
-/*
-Clicking the btn_reset will trigger the game to start.
-The start overlay will be hidden, all of the
- */
+// EVENT LISTENER TO START THE GAME
+// Clicking the btn_reset will trigger the game to start.
+// The start overlay will be hidden, all of the
+//------------------------------------------------------------------------------------------
 btn__reset.on("click", () => {
 
     start_overlay.hide();
@@ -51,9 +52,12 @@ btn__reset.on("click", () => {
 });
 
 
-/*
- Add event listener to the container for the keyboard
- */
+// KERYBOARD EVENT LISTENER
+// Every time a button on the game's page is clicked,
+// give that button the chosen class and disable it from being clicked again.
+// If the button clicked is not in the random phrase, hide one of the missed hearts
+// and check whether the player has won the game.
+//------------------------------------------------------------------------------------------
 qwerty.on('click', (event) => {
     if (event.target.tagName == "BUTTON") {
         event.target.className = "chosen";
@@ -75,13 +79,11 @@ qwerty.on('click', (event) => {
 
 
 
-/*
- Given an array, this function will return a random value from that array.
- The random function returns a random float number from 0 to 1 (not including 1)
- and the floor function rounds the number down to an integer.
- By writing the function this way, you are guaranteed to return a random integer value
- that will fall in the range of the length of the input array.
- */
+// GET A RANDOM PHRASE
+// Given an array, this function will return a random value from that array.
+// The random function returns a random float number from 0 to 1 (not including 1)
+// and the floor function rounds the number down to an integer.
+// ------------------------------------------------------------------------------------------
 function getRandomPhraseAsArray(arr){
     let random = Math.floor(Math.random()*arr.length)
     
@@ -90,13 +92,13 @@ function getRandomPhraseAsArray(arr){
     return random_arr;
 }
 
-/*
- Map a random phrase from the "phrases array" to the display.
- If the character you're currently looking at is ' ', add a new
- <li> child to the phrase element with className = "space".
- Otherwise, add a new <li> child to the phrase element with
- className="letter". Both also add the current arr index as a text value.
- */
+// ADD PHRASE TO DISPLAY
+// Map a given random phrase from the "phrases array" to the display.
+// If the character you're currently looking at is ' ', add a new
+// <li> child to the phrase element with className = "space".
+// Otherwise, add a new <li> child to the phrase element with
+// className="letter". Both also add the current arr index as a text value.
+// -------------------------------------------------------------------------------------------
 function addPhraseToDisplay(arr){
 
     for(let i=0; i<arr.length; i++){
@@ -115,12 +117,12 @@ function addPhraseToDisplay(arr){
 
 }
 
-/*
-
- */
+// CHECK LETTER
+// Initialize an empty string to store the input letter.
+// It will return the value of the phrase letter if and only if the 
+// clicked letter is in the phrase_ul.
+// ------------------------------------------------------------------------------------------
 function checkLetter(qwertyButton){
-    // init empty string to store the input letter
-    // it will get the value of the phrase letter if and only if the clicked letter is in the phrase_ul
     let letter_tracker = '';
     for (let i = 0; i < phrase.first().find('.letter').length ; i++){
         if (qwertyButton.textContent == $('.letter').eq(i).text()) {
@@ -139,13 +141,16 @@ function checkLetter(qwertyButton){
     }
 }
 
-
+// CHECK WIN
+// If the number of values shown matches the number letters in the random phrase,
+// display the win overlay. Otherwise, show the lose overlay.
+// ------------------------------------------------------------------------------------------
 function checkWin(){
     if($('.show').length == $('.letter').length){
         start_overlay.removeClass();
         start_overlay.addClass("win");
         $('.title').empty().text("CONGRATULATIONS, YOU'VE WON!");
-        btn__reset.empty().text("WANNA PLAY AGAIN?");
+        btn__reset.empty().text("DO YOU WANT TO PLAY AGAIN?");
         start_overlay.show();
     }
 
@@ -153,7 +158,7 @@ function checkWin(){
         start_overlay.removeClass();
         start_overlay.addClass("lose");
         $('.title').empty().text("SORRY, YOU'VE LOST.");
-        btn__reset.empty().text('WANNA PLAY AGAIN?');
+        btn__reset.empty().text('DO YOU WANT TO PLAY AGAIN?');
         start_overlay.show();
     }
 }
